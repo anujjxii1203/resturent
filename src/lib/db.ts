@@ -460,6 +460,12 @@ export async function sendWhatsAppMessage(phone: string, text: string, useDriver
 
   // Clean phone number (digits only)
   let cleanPhone = phone.replace(/\D/g, '');
+  
+  // If it starts with 0 and is 11 digits (e.g. 07303059402), strip the 0
+  if (cleanPhone.length === 11 && cleanPhone.startsWith('0')) {
+    cleanPhone = cleanPhone.substring(1);
+  }
+  
   if (cleanPhone.length === 10) {
     cleanPhone = '91' + cleanPhone; // Add Indian country code by default if length is 10 digits
   }
