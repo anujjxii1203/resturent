@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getDb, sendWhatsAppMessage } from '@/lib/db';
+import { getDb, assignRiderToOrder, sendWhatsAppMessage } from '@/lib/db';
 import { isAdmin } from '@/lib/auth';
 
 // GET all orders (Admin only)
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     const db = await getDb();
     const result = await db.run(
       `INSERT INTO orders (customer_name, customer_phone, delivery_address, special_notes, order_items, total_amount, status, payment_status) 
-       VALUES (?, ?, ?, ?, ?, ?, 'pending_payment', 'pending_payment')`,
+       VALUES (?, ?, ?, ?, ?, ?, 'confirmed', 'cod')`,
       [
         customer_name,
         customer_phone,
@@ -72,6 +72,14 @@ export async function POST(request: Request) {
     );
 
     const orderId = result.lastID;
+
+    // Send confirmation message to customer
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const confirmMsg = `✅ *Order Placed Successfully.*\nYour order *#${orderId}* (Amount: ₹${parseFloat(total_amount).toFixed(2)}) has been confirmed as Cash on Delivery and is being prepared in our kitchen! 👨‍🍳\n\n📍 *Track your order live:*\n${siteUrl}/track/${orderId}`;
+    await sendWhatsAppMessage(customer_phone, confirmMsg);
+
+    // Auto-assign rider
+    await assignRiderToOrder(orderId);
 
     return NextResponse.json({
       success: true,

@@ -123,16 +123,21 @@ export default function Cart({
       const json = await response.json();
       if (json.success && json.orderId) {
         setCreatedOrderId(json.orderId);
+        setOrderSuccess(true);
         
-        // Generate UPI URI
-        const upiId = '7303059402@upi';
-        const merchantName = 'Swaad Rustam';
-        const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${total.toFixed(2)}&cu=INR`;
+        // Optionally, open WhatsApp for them to track their order
+        const siteUrl = window.location.origin;
+        const message = `*Order Placed #${json.orderId} - Swaad Rustam & Biryani*\n----------------------------------\n*Name:* ${customerName.trim()}\n*Phone:* ${customerPhone.trim()}\n*Address:* ${deliveryAddress.trim()}\n----------------------------------\n*Total:* *₹${total.toFixed(2)} (Cash on Delivery)*\n----------------------------------\n_I have placed my order. Please prepare it._`;
         
-        setUpiUrl(upiString);
-        setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`);
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/917303059402?text=${encodedMessage}`;
+        setWhatsappShareUrl(whatsappUrl);
         
-        setStep('payment');
+        try {
+          // window.open(whatsappUrl, '_blank');
+        } catch (e) {
+          console.warn('Popup blocked');
+        }
       } else {
         setErrorMessage(json.error || 'Failed to register order. Please try again.');
       }
@@ -235,10 +240,10 @@ _I have completed the payment. Please verify the order._`;
             </div>
             <h3 className={styles.successHeading}>Order #{createdOrderId} Logged</h3>
             <p className={styles.successText}>
-              Your order has been recorded with payment reference UTR: <strong>{utrNumber}</strong>.
+              Your order will be delivered soon! Please pay <strong>₹{total.toFixed(2)}</strong> via Cash or UPI upon delivery.
             </p>
             <p className={styles.successSub}>
-              Please click the button below to submit order details to the restaurant owner via WhatsApp to complete verification (in case it is not automatically updated).
+              You will receive a WhatsApp message shortly with your live tracking link.
             </p>
             
             <a 
@@ -470,7 +475,7 @@ _I have completed the payment. Please verify the order._`;
                 <span className={styles.summaryTotal}>₹{total.toFixed(2)}</span>
               </div>
               <button type="submit" disabled={isSubmitting} className={styles.checkoutBtn}>
-                <span>{isSubmitting ? 'Registering Order...' : 'Proceed to Payment'}</span>
+                <span>{isSubmitting ? 'Placing Order...' : 'Place Order (Cash on Delivery)'}</span>
                 {!isSubmitting && (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M5 12h14M12 5l7 7-7 7" />
