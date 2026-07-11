@@ -127,7 +127,7 @@ export default function Cart({
         
         // Optionally, open WhatsApp for them to track their order
         const siteUrl = window.location.origin;
-        const message = `*Order Placed #${json.orderId} - Swaad Rustam & Biryani*\n----------------------------------\n*Name:* ${customerName.trim()}\n*Phone:* ${customerPhone.trim()}\n*Address:* ${deliveryAddress.trim()}\n----------------------------------\n*Total:* *₹${total.toFixed(2)} (Cash on Delivery)*\n----------------------------------\n_I have placed my order. Please prepare it._`;
+        const message = `*Order Placed #${json.orderId} - Swaad Rustam & Biryani*\n----------------------------------\n*Name:* ${customerName.trim()}\n*Phone:* ${customerPhone.trim()}\n*Address:* ${deliveryAddress.trim()}\n----------------------------------\n*Total:* *₹${total.toFixed(2)} (Cash on Delivery)*`;
         
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/917303059402?text=${encodedMessage}`;

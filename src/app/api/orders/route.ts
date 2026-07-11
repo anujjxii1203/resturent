@@ -78,6 +78,11 @@ export async function POST(request: Request) {
     const confirmMsg = `✅ *Order Placed Successfully.*\nYour order *#${orderId}* (Amount: ₹${parseFloat(total_amount).toFixed(2)}) has been confirmed as Cash on Delivery and is being prepared in our kitchen! 👨‍🍳\n\n📍 *Track your order live:*\n${siteUrl}/track/${orderId}`;
     await sendWhatsAppMessage(customer_phone, confirmMsg);
 
+    // Send order details to owner
+    const ownerPhone = '917303059402';
+    const ownerMsg = `Order Placed #${orderId} - Swaad Rustam & Biryani\n----------------------------------\nName: ${customer_name}\nPhone: ${customer_phone}\nAddress: ${delivery_address}\n----------------------------------\nTotal: ₹${parseFloat(total_amount).toFixed(2)} (Cash on Delivery)`;
+    await sendWhatsAppMessage(ownerPhone, ownerMsg);
+
     // Auto-assign rider
     await assignRiderToOrder(orderId);
 
