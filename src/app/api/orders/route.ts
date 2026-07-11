@@ -73,74 +73,10 @@ export async function POST(request: Request) {
 
     const orderId = result.lastID;
 
-    // Initialize PhonePe Payment
-    const { generatePhonePeHeaders, getPhonePeConfig } = await import('@/lib/phonepe');
-    
-    const merchantTransactionId = `TXN_SW_ORDER_${orderId}`;
-    const amountInPaise = Math.round(parseFloat(total_amount) * 100);
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-    const cleanPhone = customer_phone.replace(/\D/g, '').slice(-10);
-
-    const payload = {
-      merchantId: getPhonePeConfig().merchantId,
-      merchantTransactionId,
-      merchantUserId: `USER_${customer_phone.replace(/\D/g, '')}`,
-      amount: amountInPaise,
-      redirectUrl: `${siteUrl}/payment-status?transactionId=${merchantTransactionId}`,
-      redirectMode: 'REDIRECT',
-      callbackUrl: `${siteUrl}/api/webhook/phonepe`,
-      mobileNumber: cleanPhone.length === 10 ? cleanPhone : '9999999999',
-      paymentInstrument: {
-        type: 'PAY_PAGE'
-      }
-    };
-
-    const apiEndpoint = '/pg/v1/pay';
-    const { base64Payload, xVerify } = generatePhonePeHeaders(payload, apiEndpoint);
-    const phonepeConfig = getPhonePeConfig();
-
-    // Mock payment for local testing if no real Merchant ID is provided or in dev mode
-    if (process.env.NODE_ENV !== 'production' || !process.env.PHONEPE_MERCHANT_ID) {
-      await db.run('UPDATE orders SET phonepe_txn_id = ? WHERE id = ?', [merchantTransactionId, orderId]);
-      return NextResponse.json({
-        success: true,
-        message: 'Order created (MOCKED PAYMENT)',
-        orderId,
-        redirectUrl: `${siteUrl}/payment-status?transactionId=${merchantTransactionId}&code=PAYMENT_SUCCESS&merchantId=${phonepeConfig.merchantId}`
-      });
-    }
-
-    const phonepeRes = await fetch(`${phonepeConfig.baseUrl}${apiEndpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-VERIFY': xVerify
-      },
-      body: JSON.stringify({ request: base64Payload })
-    });
-
-    const phonepeJson = await phonepeRes.json().catch(() => ({}));
-    if (!phonepeRes.ok || !phonepeJson.success) {
-      console.error('PhonePe Pay request failed:', phonepeJson);
-      return NextResponse.json(
-        { error: 'Failed to initiate payment with PhonePe', details: phonepeJson.message },
-        { status: 500 }
-      );
-    }
-
-    const redirectUrl = phonepeJson.data.instrumentResponse.redirectInfo.url;
-
-    // Update order with transaction ID
-    await db.run(
-      'UPDATE orders SET phonepe_txn_id = ? WHERE id = ?',
-      [merchantTransactionId, orderId]
-    );
-
     return NextResponse.json({
       success: true,
-      message: 'Order created and payment initiated',
-      orderId,
-      redirectUrl
+      message: 'Order created',
+      orderId
     });
   } catch (error: any) {
     console.error('Failed to create order:', error);

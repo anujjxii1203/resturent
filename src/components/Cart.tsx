@@ -121,16 +121,20 @@ export default function Cart({
       });
 
       const json = await response.json();
-      if (json.success && json.redirectUrl) {
-        // Clear local storage and cart
-        localStorage.removeItem('tgkf_cart');
-        onClearCart();
-        onClose();
+      if (json.success && json.orderId) {
+        setCreatedOrderId(json.orderId);
         
-        // Redirect to PhonePe
-        window.location.href = json.redirectUrl;
+        // Generate UPI URI
+        const upiId = '7303059402@upi';
+        const merchantName = 'Swaad Rustam';
+        const upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${total.toFixed(2)}&cu=INR`;
+        
+        setUpiUrl(upiString);
+        setQrCodeUrl(`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiString)}`);
+        
+        setStep('payment');
       } else {
-        setErrorMessage(json.error || 'Failed to initiate PhonePe payment. Please try again.');
+        setErrorMessage(json.error || 'Failed to register order. Please try again.');
       }
     } catch (err) {
       setErrorMessage('Network error: Could not connect to server.');
