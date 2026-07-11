@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan WhatsApp QR</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #121212;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 { margin-bottom: 10px; }
+        p { color: #aaa; margin-bottom: 30px; }
+        #qr-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            min-width: 300px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        img { max-width: 300px; border-radius: 10px; }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #10b981;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <h1>Link WhatsApp</h1>
+    <p>Scan this QR code using the WhatsApp app (Linked Devices)</p>
+    <div id="qr-container">
+        <div class="loader" id="loader"></div>
+        <img id="qr-img" style="display:none;" />
+    </div>
+
+    <script>
+        async function fetchQR() {
+            try {
+                // Fetch from the local Evolution API port directly
+                const res = await fetch('http://localhost:8080/instance/connect/swaad-rustam', {
+                    headers: { 'apikey': 'swaad123' }
+                });
+                const data = await res.json();
+                
+                if (data.base64) {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('qr-img').style.display = 'block';
+                    document.getElementById('qr-img').src = data.base64;
+                } else if (data.instance && data.instance.state === 'open') {
+                    document.getElementById('qr-container').innerHTML = '<h2 style="color: #10b981;">WhatsApp is Connected! 🎉</h2>';
+                } else {
+                    // Retry every 3 seconds if not ready
+                    setTimeout(fetchQR, 3000);
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('qr-container').innerHTML = '<p style="color: #ef4444;">Error connecting to Evolution API.</p>';
+            }
+        }
+        
+        fetchQR();
+    </script>
+</body>
+</html>

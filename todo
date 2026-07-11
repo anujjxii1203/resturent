@@ -1,0 +1,70 @@
+# Enhancements Implementation Plan
+
+This plan details the technical steps to implement the four enhancements: Admin Audio Alerts, 2-Way WhatsApp Driver Updates, Analytics Dashboard, and a Customer Order Tracking Page.
+
+## Proposed Changes
+
+### 1. Admin Audio Alerts & Auto-Refresh
+We will add polling and audio notifications to the Admin Dashboard to alert staff of incoming orders.
+
+#### [MODIFY] [page.tsx](file:///d:/websites/resturent/src/app/admin/page.tsx)
+- Embed a small, base64-encoded `notification.mp3` or `.wav` directly in the file so there are no external dependencies.
+- Add a `useEffect` hook to poll `/api/orders` and `/api/reservations` every 15 seconds.
+- Compare incoming data to previous state lengths. If `newOrders.length > currentOrders.length`, trigger `audio.play()`.
+
+---
+
+### 2. Analytics & Revenue Charts
+We will add an "Analytics" tab to the Admin dashboard, complete with visual charts of business performance.
+
+#### [MODIFY] [package.json](file:///d:/websites/resturent/package.json)
+- Run `npm install recharts` to install the charting library.
+
+#### [MODIFY] [page.tsx](file:///d:/websites/resturent/src/app/admin/page.tsx)
+- Add a new "Analytics" tab link to the sidebar.
+- Inside the Analytics tab, calculate:
+  - **7-Day Revenue Trend**: Group order totals by `created_at` day.
+  - **Top Selling Items**: Parse the `order_items` JSON column from all confirmed/delivered orders and rank them.
+- Render these insights using `<LineChart>` and `<BarChart>` from `recharts`.
+
+---
+
+### 3. Customer Order Tracking Page
+We will build a dynamic, real-time public page where customers can track their order status.
+
+#### [NEW] [route.ts](file:///d:/websites/resturent/src/app/api/orders/%5Bid%5D/route.ts)
+- Create a GET endpoint to fetch order details securely for public tracking.
+
+#### [NEW] [page.tsx](file:///d:/websites/resturent/src/app/track/%5Bid%5D/page.tsx)
+- Create a beautiful, responsive tracking timeline UI (Pending -> Confirmed -> Assigned -> Out for Delivery -> Delivered).
+- The page will automatically poll the GET endpoint every 10 seconds to update live.
+
+#### [MODIFY] [route.ts](file:///d:/websites/resturent/src/app/api/webhook/payment-confirm/route.ts)
+- Update the payment confirmation WhatsApp message to include: `Track your order live: http://localhost:3000/track/[orderId]`
+
+#### [MODIFY] [route.ts](file:///d:/websites/resturent/src/app/api/webhook/whatsapp/route.ts)
+- Do the same for the manual UTR submission confirmation logic so all users get the tracking link.
+
+---
+
+### 4. 2-Way WhatsApp Driver Updates
+Drivers will be able to reply "Delivered" via WhatsApp to mark an order complete.
+
+#### [MODIFY] [route.ts](file:///d:/websites/resturent/src/app/api/webhook/whatsapp/route.ts)
+- Add a new regex check for `data.message.conversation.toLowerCase().includes('delivered')`.
+- Look up the driver by phone number.
+- Find their active order (where status is `out_for_delivery`, `picked_up`, or `assigned`).
+- Update order status to `delivered` in the database.
+- Update driver status back to `available`.
+- Send an automatic "Thank you, order marked as delivered!" reply to the driver, and a "Your food has arrived!" text to the customer.
+
+## Verification Plan
+
+### Automated Tests
+- Run `npm run build` locally inside the docker container to ensure no TypeScript or Next.js build errors.
+
+### Manual Verification
+1. Open the Admin Panel, place a dummy order, and ensure the "Ding!" sound plays.
+2. Check the Analytics tab for rendered Recharts components.
+3. Open `http://localhost:3000/track/[id]` to verify the tracking timeline.
+4. Test the WhatsApp webhook by sending a mock JSON payload representing a driver typing "Delivered".

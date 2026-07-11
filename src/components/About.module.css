@@ -1,0 +1,280 @@
+.locationSection {
+  padding: 6rem 0;
+  background-color: #ffffff;
+  border-bottom: 1px solid rgba(26, 18, 18, 0.06);
+  position: relative;
+  z-index: 2;
+}
+
+.sectionHeading {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tabWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4rem;
+  border-bottom: 2px solid rgba(26, 18, 18, 0.08);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tabBtn {
+  background: none;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transform: translateY(2px);
+  transition: var(--transition-smooth);
+}
+
+.activeTab {
+  color: var(--warm-amber);
+  border-bottom-color: var(--warm-amber);
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+/* Scooter column styles */
+.scooterCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: #fbf9f6;
+  border-radius: 8px;
+  border: 1px dashed rgba(230, 138, 0, 0.2);
+}
+
+.scooterSvg {
+  width: 140px;
+  height: 140px;
+  animation: bounce 3s ease-in-out infinite;
+}
+
+.scooterText {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-top: 1rem;
+}
+
+/* Info column styles */
+.infoCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.locationTitle {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.address {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.metaBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--warm-amber);
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.metaVal {
+  font-size: 1rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.phoneLink {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--rich-burgundy);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.phoneLink:hover {
+  color: var(--primary-gold);
+}
+
+/* Map column styles */
+.mapCol {
+  display: flex;
+  justify-content: center;
+}
+
+.mapCard {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(26, 18, 18, 0.12);
+  box-shadow: 0 4px 15px rgba(26, 18, 18, 0.05);
+}
+
+.mapVisual {
+  position: relative;
+  height: 160px;
+  background: #e5e9f0;
+  overflow: hidden;
+}
+
+.mapRoadH {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: #ffffff;
+}
+
+.mapRoadV {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: #ffffff;
+}
+
+.mapTag {
+  position: absolute;
+  background: #ffffff;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  color: #666;
+}
+
+.mapPinContainer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.mapPin {
+  width: 12px;
+  height: 12px;
+  background: var(--primary-orange);
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.mapLabel {
+  background: var(--bg-dark);
+  color: var(--text-light);
+  padding: 0.2rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border-radius: 3px;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+.mapDirectionBtn {
+  display: block;
+  text-align: center;
+  padding: 0.9rem;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.mapDirectionBtn:hover {
+  background: var(--primary-orange);
+  color: var(--bg-dark);
+}
+
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(114, 28, 36, 0.7);
+  }
+
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 6px rgba(114, 28, 36, 0);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(114, 28, 36, 0);
+  }
+}
+
+@media (max-width: 900px) {
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .scooterCol {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .mapCol {
+    justify-content: flex-start;
+  }
+
+  .mapCard {
+    max-width: 100%;
+  }
+}

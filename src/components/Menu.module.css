@@ -1,0 +1,407 @@
+.menuSection {
+  padding: 6rem 0;
+  background-color: var(--bg-light);
+  border-top: 1px solid var(--border-green);
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 3.2rem;
+  color: var(--text-dark);
+  margin-top: 0.5rem;
+}
+
+.subtitle {
+  font-family: var(--font-body);
+  color: var(--primary-orange);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.desc {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0.8rem auto 0 auto;
+  line-height: 1.6;
+}
+
+/* SECTION 1: Rustam Special (Top 3 Cards) */
+.specialGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem;
+  margin-bottom: 5rem;
+}
+
+.specialCard {
+  background: var(--bg-light);
+  border: 1px solid var(--primary-green);
+  border-radius: 24px;
+  padding: 2rem 1.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-card);
+}
+
+.specialCard:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-orange);
+  box-shadow: 0 15px 35px rgba(61, 38, 18, 0.08);
+}
+
+/* Thali crop frame */
+.plateCircle {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(61, 38, 18, 0.12);
+  margin-bottom: 1.5rem;
+  background-size: cover;
+  background-position: center;
+  transition: var(--transition-smooth);
+}
+
+.specialCard:hover .plateCircle {
+  transform: scale(1.05) rotate(5deg);
+}
+
+/* Small badges on top right of thali */
+.badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: var(--primary-orange);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 3px 8px rgba(231, 150, 86, 0.3);
+  z-index: 5;
+}
+
+.ratingRow {
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.star {
+  color: var(--primary-orange);
+  fill: var(--primary-orange);
+}
+
+.itemName {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+
+.itemDesc {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+/* Feature checklist block */
+.featuresList {
+  width: 100%;
+  border-top: 1px dashed rgba(143, 168, 130, 0.4);
+  padding-top: 1.2rem;
+  margin-bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-dark);
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+.checkIcon {
+  color: var(--primary-green);
+  flex-shrink: 0;
+}
+
+.cardFooter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.priceTag {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* SECTION 2: More Food Choices */
+.sectionDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 5rem 0 3.5rem 0;
+}
+
+.dividerLine {
+  height: 1px;
+  background: var(--border-green);
+  flex-grow: 1;
+  max-width: 200px;
+}
+
+.dividerTitle {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--text-dark);
+}
+
+.choicesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.choiceCard {
+  background: var(--bg-light);
+  border: 1px solid rgba(143, 168, 130, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 15px rgba(61, 38, 18, 0.02);
+}
+
+.choiceCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-green);
+  box-shadow: var(--shadow-luxury);
+}
+
+.choicePlate {
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  overflow: hidden;
+  box-shadow: 0 5px 12px rgba(61, 38, 18, 0.08);
+  margin-bottom: 1.2rem;
+  background-size: cover;
+  background-position: center;
+  transition: var(--transition-smooth);
+}
+
+.choiceCard:hover .choicePlate {
+  transform: scale(1.04);
+}
+
+.choiceTitle {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  text-align: center;
+  margin-bottom: 0.4rem;
+}
+
+.choiceDesc {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+  flex-grow: 1;
+}
+
+.choiceFooter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.choicePrice {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* Shared Widget Buttons */
+.cartActionBtn {
+  background: var(--primary-orange);
+  color: #ffffff;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.cartActionBtn:hover {
+  background: var(--primary-orange-hover);
+  transform: translateY(-1px);
+}
+
+/* Quantity adjuster widget */
+.qtyWidget {
+  display: flex;
+  align-items: center;
+  background: var(--primary-green-muted);
+  border: 1px solid var(--primary-green);
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 0.2rem;
+}
+
+.qtyBtn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--text-dark);
+  font-size: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: var(--transition-smooth);
+}
+
+.qtyBtn:hover {
+  background: var(--primary-green);
+  color: #ffffff;
+}
+
+.qtyValue {
+  padding: 0 0.6rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+}
+
+.searchSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3.5rem;
+}
+
+.searchBox {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1.2rem 0.75rem 2.8rem;
+  background: #ffffff;
+  border: 1px solid var(--border-green);
+  border-radius: 25px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  box-shadow: 0 4px 15px rgba(61, 38, 18, 0.02);
+  transition: var(--transition-smooth);
+}
+
+.searchInput:focus {
+  border-color: var(--primary-orange);
+  box-shadow: 0 5px 18px rgba(231, 150, 86, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.loader, .noResults {
+  text-align: center;
+  padding: 5rem 2rem;
+  font-family: var(--font-heading);
+  color: var(--text-muted);
+  font-size: 1.3rem;
+}
+
+@media (max-width: 1024px) {
+  .specialGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  .choicesGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .specialGrid {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto 3rem auto;
+  }
+  
+  .choicesGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+  
+  .title {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .choicesGrid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}

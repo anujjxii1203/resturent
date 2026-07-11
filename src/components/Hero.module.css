@@ -1,0 +1,267 @@
+.heroSection {
+  padding: 10rem 0 6rem 0;
+  background-color: var(--bg-light);
+  min-height: 90vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+/* Background blob decorations matching image */
+.greenBlob {
+  position: absolute;
+  top: -5%;
+  right: -5%;
+  width: 50%;
+  height: 90%;
+  background: #A3B19B; /* Sage green blob background */
+  border-radius: 40% 60% 50% 50% / 40% 40% 60% 60%;
+  opacity: 0.8;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(10px);
+}
+
+.tanBlob {
+  position: absolute;
+  top: 15%;
+  right: -10%;
+  width: 20%;
+  height: 40%;
+  background: #E5C397; /* Soft mustard/tan blob */
+  border-radius: 50%;
+  opacity: 0.6;
+  z-index: -2;
+  pointer-events: none;
+  filter: blur(15px);
+}
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3.5rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.transitioning {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.infoColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.estdTag {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.8rem;
+  opacity: 0.95;
+}
+
+.mainTitle {
+  font-family: var(--font-heading);
+  font-size: 4.8rem;
+  color: var(--text-dark);
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.02em;
+}
+
+.description {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 440px;
+  margin-bottom: 2rem;
+}
+
+.orderBtn {
+  background: var(--primary-orange);
+  color: #ffffff;
+  padding: 0.95rem 2.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(231, 150, 86, 0.3);
+  transition: var(--transition-smooth);
+  border: 1.5px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orderBtn:hover {
+  background: transparent;
+  color: var(--primary-orange);
+  border-color: var(--primary-orange);
+  box-shadow: 0 6px 18px rgba(231, 150, 86, 0.15);
+  transform: translateY(-2px);
+}
+
+.imageColumn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Rounded Thali Frame matching image */
+.thaliFrame {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%; /* Organic fluid shape */
+  border: 6px solid #ffffff; /* Pure white border to stand out cleanly */
+  box-shadow: none; /* Completely removed shadow to eliminate the black part/dark shadow */
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thaliImage {
+  width: 102%;
+  height: 102%;
+  background-size: cover;
+  background-position: center;
+  animation: fadeInImage 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes fadeInImage {
+  from {
+    opacity: 0.2;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Micro-doodles/decor details around the thali */
+.spiceDoodle1 {
+  position: absolute;
+  bottom: 15%;
+  left: -10%;
+  color: var(--text-dark);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.spiceDoodle2 {
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  color: var(--text-dark);
+  opacity: 0.4;
+  pointer-events: none;
+  transform: rotate(45deg);
+}
+
+/* Slide Indicators Navigation */
+.dotContainer {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.8rem;
+  z-index: 10;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(143, 168, 130, 0.35); /* Muted green */
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition-smooth);
+}
+
+.dot:hover {
+  background: var(--primary-green);
+  transform: scale(1.2);
+}
+
+.dot.activeDot {
+  background: var(--primary-orange);
+  width: 25px; /* Pill shape for active dot */
+  border-radius: 5px;
+}
+
+@media (max-width: 1024px) {
+  .greenBlob {
+    width: 60%;
+  }
+  
+  .mainTitle {
+    font-size: 3.8rem;
+  }
+  
+  .thaliFrame {
+    width: 340px;
+    height: 340px;
+  }
+}
+
+@media (max-width: 900px) {
+  .heroSection {
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+  }
+  
+  .greenBlob {
+    width: 80%;
+    height: 70%;
+    top: 30%;
+    right: -10%;
+  }
+
+  .gridContainer {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .infoColumn {
+    align-items: center;
+    text-align: center;
+  }
+
+  .description {
+    max-width: 500px;
+  }
+
+  .thaliFrame {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .dotContainer {
+    bottom: 1rem;
+  }
+}

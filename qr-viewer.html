@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp QR Code - Swaad Rustam</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 { color: #25d366; margin-bottom: 0.5rem; }
+    p { color: #aaa; margin-bottom: 2rem; }
+    #qr-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    #qr-container img { display: block; width: 280px; height: 280px; }
+    #status {
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .loading { background: rgba(255,165,0,0.15); color: orange; border: 1px solid orange; }
+    .connected { background: rgba(37,211,102,0.15); color: #25d366; border: 1px solid #25d366; }
+    .error { background: rgba(255,80,80,0.15); color: #ff5050; border: 1px solid #ff5050; }
+    button {
+      margin-top: 1.5rem;
+      background: #25d366;
+      color: #000;
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #1ebe5d; }
+  </style>
+</head>
+<body>
+  <h1>📱 Swaad Rustam WhatsApp</h1>
+  <p>Scan this QR code with your restaurant's WhatsApp number</p>
+
+  <div id="qr-container">
+    <img id="qr-img" src="" alt="Loading QR..." />
+  </div>
+
+  <div id="status" class="loading">⏳ Loading QR Code...</div>
+  <button onclick="fetchQR()">🔄 Refresh QR</button>
+
+  <script>
+    async function fetchQR() {
+      document.getElementById('status').className = 'loading';
+      document.getElementById('status').textContent = '⏳ Fetching QR Code...';
+      
+      try {
+        const res = await fetch('http://localhost:8080/instance/connect/swaad-rustam', {
+          headers: { 'apikey': 'swaad123' }
+        });
+        const data = await res.json();
+        
+        console.log('API Response:', data);
+
+        if (data.base64) {
+          // base64 QR code
+          document.getElementById('qr-img').src = data.base64;
+          document.getElementById('status').className = 'loading';
+          document.getElementById('status').textContent = '📷 Scan with WhatsApp!';
+        } else if (data.qrcode?.base64) {
+          document.getElementById('qr-img').src = data.qrcode.base64;
+          document.getElementById('status').className = 'loading';
+          document.getElementById('status').textContent = '📷 Scan with WhatsApp!';
+        } else if (data.instance?.state === 'open') {
+          document.getElementById('status').className = 'connected';
+          document.getElementById('status').textContent = '✅ WhatsApp Connected!';
+        } else {
+          document.getElementById('status').className = 'error';
+          document.getElementById('status').textContent = '❌ No QR available. Try refresh. Response: ' + JSON.stringify(data).substring(0, 100);
+        }
+      } catch (err) {
+        document.getElementById('status').className = 'error';
+        document.getElementById('status').textContent = '❌ Error: ' + err.message;
+      }
+    }
+
+    // Auto-fetch on load
+    fetchQR();
+    // Auto-refresh every 20 seconds
+    setInterval(fetchQR, 20000);
+  </script>
+</body>
+</html>

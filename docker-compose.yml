@@ -1,0 +1,108 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_USER=evolution
+      - POSTGRES_PASSWORD=evolutionpass
+      - POSTGRES_DB=evolution
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U evolution"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:latest
+    restart: always
+    command: redis-server
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  evolution-api:
+    image: atendai/evolution-api:v2.2.1
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SERVER_URL=http://localhost:8080
+      - DOCKER_ENV=true
+      - LOG_LEVEL=ERROR,WARN,INFO
+      - AUTHENTICATION_TYPE=apikey
+      - AUTHENTICATION_API_KEY=swaad123
+      # Redis Config (no password)
+      - CACHE_REDIS_ENABLED=false
+      - CACHE_REDIS_URI=redis://redis:6379/6
+      - CACHE_REDIS_PREFIX_KEY=evolution
+      - CACHE_REDIS_SAVE_INSTANCES=false
+      - CACHE_LOCAL_ENABLED=false
+      # Postgres Config
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://evolution:evolutionpass@postgres:5432/evolution?schema=public
+      - DATABASE_CONNECTION_CLIENT_NAME=evolution_client
+      - DATABASE_SAVE_DATA_INSTANCE=true
+      - DATABASE_SAVE_DATA_NEW_MESSAGE=true
+      - DATABASE_SAVE_MESSAGE_UPDATE=true
+      - DATABASE_SAVE_DATA_CONTACTS=true
+      - DATABASE_SAVE_DATA_CHATS=true
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - evolution_instances:/evolution/instances
+      - ./evolution.env:/evolution/.env
+
+  evolution-manager:
+    image: atendai/evolution-manager:latest
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - WA_BASE_URL=http://evolution-api:8080
+    entrypoint: /bin/sh -c "npm install -g fs-extra evolution-manager@0.4.11 && evolution-manager server start"
+    depends_on:
+      - evolution-api
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://evolution:evolutionpass@postgres:5432/evolution?schema=public
+      - EVOLUTION_API_URL=http://evolution-api:8080
+      - EVOLUTION_API_KEY=swaad123
+      - EVOLUTION_INSTANCE_NAME=swaad-rustam2
+      - EVOLUTION_DRIVER_INSTANCE_NAME=driver-bot
+      - ADMIN_PASSWORD=admin123
+      - NEXT_PUBLIC_SITE_URL=http://localhost:3000
+      - PHONEPE_MERCHANT_ID=PGTESTPAYUAT86
+      - PHONEPE_SALT_KEY=96434309-7796-489d-8924-ab56988a6076
+      - PHONEPE_SALT_INDEX=1
+      - PHONEPE_ENV=SANDBOX
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
+  evolution_instances:

@@ -1,0 +1,94 @@
+.gallerySection {
+  padding: 8rem 0;
+  background: var(--bg-light);
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.heading {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.subtext {
+  color: var(--primary-orange);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.masonry {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  grid-auto-rows: 250px;
+}
+
+/* Make some items span 2 rows for masonry effect */
+.galleryItem:nth-child(3n+1) {
+  grid-row: span 2;
+}
+
+.galleryItem {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid var(--border-green);
+  cursor: pointer;
+}
+
+.imageBox {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-card);
+  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.galleryItem:hover .imageBox {
+  transform: scale(1.06);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(17, 17, 17, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.galleryItem:hover .overlay {
+  opacity: 1;
+}
+
+.overlayText {
+  color: var(--primary-orange);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  letter-spacing: 0.1em;
+  transform: translateY(20px);
+  transition: var(--transition-smooth);
+}
+
+.galleryItem:hover .overlayText {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+
+  .masonry {
+    grid-auto-rows: 200px;
+  }
+}

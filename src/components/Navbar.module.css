@@ -1,0 +1,200 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: 90px;
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+
+.scrolled {
+  height: 75px;
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--border-green);
+  box-shadow: 0 4px 20px rgba(61, 38, 18, 0.04);
+  backdrop-filter: blur(12px);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logoText {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.logoSubtext {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--primary-orange);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.middleMenu {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.navLink {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-dark);
+  position: relative;
+  padding: 0.5rem 0;
+  font-family: var(--font-body);
+}
+
+.navLink:hover {
+  color: var(--primary-orange);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-orange);
+  transition: var(--transition-smooth);
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+.rightMenu {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+}
+
+.cartButton {
+  background: var(--primary-green-muted);
+  border: 1px solid var(--primary-green);
+  color: var(--text-dark);
+  padding: 0.65rem 1.4rem;
+  border-radius: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.cartButton:hover {
+  background: var(--primary-green);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.reserveBtn {
+  background: var(--primary-orange);
+  color: #ffffff;
+  padding: 0.65rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 10px rgba(231, 150, 86, 0.2);
+}
+
+.reserveBtn:hover {
+  background: var(--primary-orange-hover);
+  transform: translateY(-2px);
+}
+
+.mobileRight {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cartButtonMobileSmall {
+  background: var(--primary-green-muted);
+  border: 1px solid var(--primary-green);
+  color: var(--text-dark);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.mobileCartBadge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--primary-orange);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileToggle {
+  display: none;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+@media (max-width: 900px) {
+  .middleMenu, .rightMenu {
+    display: none;
+  }
+  
+  .mobileToggle, .mobileRight {
+    display: flex;
+  }
+
+  .nav {
+    justify-content: space-between;
+  }
+  
+  .header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-green);
+  }
+}
