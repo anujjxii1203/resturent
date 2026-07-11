@@ -99,6 +99,17 @@ export async function POST(request: Request) {
     const { base64Payload, xVerify } = generatePhonePeHeaders(payload, apiEndpoint);
     const phonepeConfig = getPhonePeConfig();
 
+    // Mock payment for local testing if no real Merchant ID is provided or in dev mode
+    if (process.env.NODE_ENV !== 'production' || !process.env.PHONEPE_MERCHANT_ID) {
+      await db.run('UPDATE orders SET phonepe_txn_id = ? WHERE id = ?', [merchantTransactionId, orderId]);
+      return NextResponse.json({
+        success: true,
+        message: 'Order created (MOCKED PAYMENT)',
+        orderId,
+        redirectUrl: `${siteUrl}/payment-status?transactionId=${merchantTransactionId}&code=PAYMENT_SUCCESS&merchantId=${phonepeConfig.merchantId}`
+      });
+    }
+
     const phonepeRes = await fetch(`${phonepeConfig.baseUrl}${apiEndpoint}`, {
       method: 'POST',
       headers: {

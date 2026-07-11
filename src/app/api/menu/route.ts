@@ -9,8 +9,9 @@ export async function GET() {
     const menuItems = await db.all('SELECT * FROM menu_items ORDER BY category, name');
     return NextResponse.json({ success: true, data: menuItems });
   } catch (error: any) {
+    console.error("API /api/menu ERROR:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch menu items', details: error.message },
+      { error: 'Failed to fetch menu items', details: error.message || error.toString() },
       { status: 500 }
     );
   }

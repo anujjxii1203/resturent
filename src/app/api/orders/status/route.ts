@@ -24,7 +24,21 @@ export async function GET(request: Request) {
 
     // If order is still pending, proactively check PhonePe since webhook might fail on localhost
     if (order.status === 'pending_payment' || order.payment_status === 'pending_payment') {
-      const config = getPhonePeConfig();
+      
+      // Mock payment status for local testing
+      if (process.env.NODE_ENV !== 'production' || !process.env.PHONEPE_MERCHANT_ID) {
+        await db.run(
+          "UPDATE orders SET status = 'confirmed', payment_status = 'completed', utr_number = ? WHERE id = ?",
+          ['MOCK_UTR', order.id]
+        );
+        const confirmMsg = `✅ *Payment received successfully.*\nYour order *#${order.id}* (Amount: ₹${order.total_amount.toFixed(2)}) has been confirmed and is being prepared in our kitchen! 👨‍🍳`;
+        await sendWhatsAppMessage(order.customer_phone, confirmMsg);
+        await assignRiderToOrder(order.id);
+        
+        order.status = 'confirmed';
+        order.payment_status = 'completed';
+      } else {
+        const config = getPhonePeConfig();
       const apiEndpoint = `/pg/v1/status/${config.merchantId}/${transactionId}`;
       const stringToSign = apiEndpoint + config.saltKey;
       const sha256 = crypto.createHash('sha256').update(stringToSign).digest('hex');
@@ -59,6 +73,7 @@ export async function GET(request: Request) {
         order.status = 'confirmed';
         order.payment_status = 'completed';
       }
+      } // End of else block
     }
 
     return NextResponse.json({
